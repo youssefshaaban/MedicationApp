@@ -18,19 +18,20 @@ import com.example.taskapp.R
 
 @Composable
 fun LoginScreen(successLogin: (String) -> Unit) {
-    val viewModel= hiltViewModel<LoginViewModel>()
-    val userName=viewModel.userName.collectAsState()
-    val password=viewModel.userName.collectAsState()
-    val navigateToHome=viewModel.navigateToHome.collectAsStateWithLifecycle(false)
+    val viewModel = hiltViewModel<LoginViewModel>()
+    val userName = viewModel.userName.collectAsState()
+    val password = viewModel.password.collectAsState()
+    val navigateToHome = viewModel.navigateToHome.collectAsStateWithLifecycle(false)
     var passwordVisible by remember { mutableStateOf(false) }
-    var isLoginButtonEnabled by remember { mutableStateOf(false) }
-
-    LaunchedEffect(userName, password) {
-        isLoginButtonEnabled = userName.value.isNotEmpty() && password.value.isNotEmpty()
+    val isLoginButtonEnabled by remember {
+        derivedStateOf {
+            userName.value.isNotEmpty() && password.value.isNotEmpty()
+        }
     }
 
-    LaunchedEffect(navigateToHome) {
-        if (navigateToHome.value){
+
+    LaunchedEffect(navigateToHome.value) {
+        if (navigateToHome.value) {
             successLogin(userName.value)
         }
     }
@@ -89,8 +90,7 @@ fun LoginScreen(successLogin: (String) -> Unit) {
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewLogin(){
-    LoginScreen{
-        str->
+fun PreviewLogin() {
+    LoginScreen { str ->
     }
 }

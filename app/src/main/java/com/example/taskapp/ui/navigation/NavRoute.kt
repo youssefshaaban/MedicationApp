@@ -10,6 +10,10 @@ sealed class NavRoute(val path: String) {
         val userName: String = "userName"
     }
 
+    data object Detail : NavRoute("detail") {
+        val detailItem: String = "detailItem"
+    }
+
 
     // build navigation path (for screen navigation)
     fun withArgs(vararg args: String): String {

@@ -29,8 +29,8 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
     fun onChangeUserName(username: String){
         _userName.value=username
     }
-    fun onChangePassword(username: String){
-        _password.value=username
+    fun onChangePassword(password: String){
+        _password.value=password
     }
 
     fun onLoginClick() {

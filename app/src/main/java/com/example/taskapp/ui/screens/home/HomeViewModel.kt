@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.entity.MedicationEntity
 import com.example.domain.usecases.GetAllMedicationUseCase
 import com.example.domain.util.Resource
+import com.example.taskapp.ui.screens.detail.MedicationEntityUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
@@ -26,7 +27,7 @@ class HomeViewModel @Inject constructor(private val getAllMedicationUseCase: Get
             getAllMedicationUseCase().collectLatest {
                 when(it){
                     is Resource.Success->{
-                        _uiState.value=ViewState.Success(it.data.toPersistentList())
+                        _uiState.value=ViewState.Success(it.data.map { MedicationEntityUi(it.dose,it.name,it.strength) }.toPersistentList())
                     }
                     is Resource.Error->{
                         _uiState.value=ViewState.Error("something wrong")
@@ -41,6 +42,6 @@ class HomeViewModel @Inject constructor(private val getAllMedicationUseCase: Get
 }
 sealed class ViewState {
     data object Loading : ViewState()
-    data class Success(val medication:PersistentList<MedicationEntity>) : ViewState()
+    data class Success(val medication:PersistentList<MedicationEntityUi>) : ViewState()
     data class Error(val error: String) : ViewState()
 }
